@@ -22,8 +22,8 @@ int main(void)
     int sentences = count_sentences(text);
     printf("%i sentence(s)\n", sentences);
 
-    float l = round((float) letters * 100 / words);
-    float s = round((float) sentences * 100 / words);
+    float l = ((float) letters * 100 / words);
+    float s = ((float) sentences * 100 / words);
 
     int level = round (0.0588 * l - 0.296 * s - 15.8);
 
