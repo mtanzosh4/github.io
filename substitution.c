@@ -45,10 +45,10 @@ int main(int argc, string argv[])
     }
 
     // get plaintext
-    string plaintext = get_string("Plaintext: ");
+    string plaintext = get_string("plaintext: ");
 
     // print out ciphertext
-    printf("Ciphertext: ");
+    printf("ciphertext: ");
     for (int i = 0; i < strlen(plaintext); i++)
     {
         if (isupper(plaintext[i]))
