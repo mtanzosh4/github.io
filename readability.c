@@ -27,9 +27,19 @@ int main(void)
 
     int level = round (0.0588 * l - 0.296 * s - 15.8);
 
-    level = (level > 16) ? 16: level;
+    if (level > 16)
+    {
+        printf("Grade 16+\n");
+    }
+    else if (level < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+    else
+    {
+         printf("Grade %i\n", level);
+    }
 
-    printf("Grade %i\n", level);
 }
 
 int count_sentences(string text)
