@@ -32,7 +32,7 @@ int main(int argc, string argv[])
     bool letters[26] = {false};
     for (int i = 0; i < KEY_LENGTH; i++)
     {
-        letters[(int) toupper(key[i] - 65)] = true;
+        letters[(int) toupper(key[i]) - 65] = true;
     }
 
     for (int i = 0; i < KEY_LENGTH; i++)
