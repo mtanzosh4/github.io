@@ -20,7 +20,7 @@ int main(void)
     // printf("%i words(s)\n", words);
 
     int sentences = count_sentences(text);
-    // printf("%i sentence(s)\n", sentences);
+    printf("%i sentence(s)\n", sentences);
 
     float l = round((float) letters * 100 / words);
     float s = round((float) sentences * 100 / words);
