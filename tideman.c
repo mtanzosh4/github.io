@@ -167,6 +167,7 @@ void sort_pairs(void)
     for (int i = 0; i < candidate_count; i++)
     {
         wins[i].count = 0;
+        wins[i].candidate = i;
     }
 
     for (int i = 0; i < pair_count; i++)
