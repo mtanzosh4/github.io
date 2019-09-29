@@ -218,7 +218,7 @@ void lock_pairs(void)
     {
         // check for cycle
         // if all other candidates appear as a loser,
-        bool loosers[candidate_count] = { false };
+        bool loosers[MAX] = { false };
         for (int j = 0; j < candidate_count; j++)
         {
             for (int k = 0; k < candidate_count; k++)
