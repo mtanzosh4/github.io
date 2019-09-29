@@ -188,11 +188,11 @@ void sort_pairs(void)
             }
         }
     }
-
+    int position = 0;
     // sort pairs array
     for (int i = 0; i < candidate_count; i++)
     {
-        int position = i;
+
         for (int j = 0; j < pair_count; j++)
         {
             // search for each candidate and swap to proper position
@@ -200,8 +200,8 @@ void sort_pairs(void)
             {
                 // swap
                 pair temp = pairs[j];
-                pairs[j] = pairs[i];
-                pairs[i] = temp;
+                pairs[j] = pairs[position];
+                pairs[position] = temp;
                 position++;
             }
         }
