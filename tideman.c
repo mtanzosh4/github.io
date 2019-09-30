@@ -212,10 +212,21 @@ void lock_pairs(void)
         // if all other candidates appear as a loser,
         bool loosers[MAX] = { false };
 
-        for (int j = 0; j < pair_count; j++)
+        for (int j = 0; j > pair_count; j++)
         {
-            loosers[pairs[j].loser] = true;
+            if (i != j && locked[i][j])
+                loosers[pairs[j].loser] = true;
         }
+
+
+        // for (int j = 0; j < pair_count; j++)
+        // {
+        //     if (locked[i][j])
+        //     {
+        //          loosers[pairs[j].loser] = true;
+        //     }
+
+        // }
         // for (int j = 0; j < candidate_count; j++)
         // {
         //     for (int k = 0; k < candidate_count; k++)
