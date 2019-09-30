@@ -156,31 +156,32 @@ void sort_pairs(void)
 {
     typedef struct
     {
-        int count;
-        int candidate;
+        int winner;
+        int loser;
+        int strength;
     }
     win;
 
-    // count up wins for each candidate
-    win wins[candidate_count];
-
-    for (int i = 0; i < candidate_count; i++)
-    {
-        wins[i].count = 0;
-        wins[i].candidate = i;
-    }
+    // calculate strength
+    win wins[pair_count];
 
     for (int i = 0; i < pair_count; i++)
     {
-        wins[pairs[i].winner].count++;
+        for (int j = i + 1; j < pair_count; j++)
+        {
+            wins[i].strength = preferences[i][j] - preferences[j][i];
+            wins[i].winner = i;
+            wins[i].loser = j;
+        }
     }
 
+
     // sort wins array largest to smallest
-    for (int i = 0; i < candidate_count - 1; i++)
+    for (int i = 0; i < pair_count - 1; i++)
     {
-        for (int j = 0; j < candidate_count - 1; j++)
+        for (int j = 0; j < pair_count - 1; j++)
         {
-            if (wins[j].count < wins[j + 1].count)
+            if (wins[j].strength < wins[j + 1].strength)
             {
                 win temp = wins[j];
                 wins[j] = wins[j + 1];
@@ -188,15 +189,16 @@ void sort_pairs(void)
             }
         }
     }
+
     int position = 0;
     // sort pairs array
-    for (int i = 0; i < candidate_count; i++)
+    for (int i = 0; i < pair_count; i++)
     {
 
         for (int j = 0; j < pair_count; j++)
         {
             // search for each candidate and swap to proper position
-            if (wins[i].candidate == pairs[j].winner)
+            if (wins[i].winner == pairs[j].winner)
             {
                 // swap
                 pair temp = pairs[j];
@@ -206,9 +208,6 @@ void sort_pairs(void)
             }
         }
     }
-
-
-
     return;
 }
 
