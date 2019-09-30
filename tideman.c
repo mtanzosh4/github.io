@@ -167,12 +167,14 @@ void sort_pairs(void)
 
     for (int i = 0; i < pair_count; i++)
     {
-        for (int j = i + 1; j < pair_count; j++)
-        {
-            wins[i].strength = preferences[i][j] - preferences[j][i];
-            wins[i].winner = i;
-            wins[i].loser = j;
-        }
+        // for (int j = i + 1; j < pair_count; j++)
+        // {
+            int w = pairs[i].winner;
+            int l = pairs[i].loser;
+            wins[i].strength = preferences[w][l] - preferences[l][w];
+            wins[i].winner = w;
+            wins[i].loser = l;
+        // }
     }
 
 
