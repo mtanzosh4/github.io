@@ -196,19 +196,9 @@ void sort_pairs(void)
     // sort pairs array
     for (int i = 0; i < pair_count; i++)
     {
+        pairs[i].winner = wins[i].winner;
+        pairs[i].loser = wins[i].loser;
 
-        for (int j = 0; j < pair_count; j++)
-        {
-            // search for each candidate and swap to proper position
-            if (wins[i].winner == pairs[j].winner)
-            {
-                // swap
-                pair temp = pairs[j];
-                pairs[j] = pairs[position];
-                pairs[position] = temp;
-                position++;
-            }
-        }
     }
     return;
 }
