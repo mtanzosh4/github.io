@@ -214,7 +214,7 @@ void lock_pairs(void)
 
         for (int j = 0; j > candidate_count; j++)
         {
-            if (i != j && locked[i][j])
+            if (i != j)
                 loosers[pairs[j].loser] = true;
         }
 
