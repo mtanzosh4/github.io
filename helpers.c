@@ -70,106 +70,68 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-
-    typedef struct
-    {
-        int  row;
-        int  column;
-    }
-    CHOICES;
-
-    RGBTRIPLE imageCopy[height][width];
-    CHOICES choices[9];
-    CHOICES tmp;
-
-    for (int row = 0; row < height; row++)
-    {
-        for (int column = 0; column < width; column++)
-        {
-            // build RGBstructure list based on the pixels you want to average- array of pairs
-            // find the nine pixels
-            tmp.row = row - 1;
-            tmp.column = column - 1;
-            choices[0] = tmp;
-
-            tmp.row = row - 1;
-            tmp.column = column;
-            choices[1] = tmp;
-
-            tmp.row = row - 1;
-            tmp.column = column + 1;
-            choices[2] = tmp;
-
-            tmp.row = row;
-            tmp.column = column - 1;
-            choices[3] = tmp;
-
-            tmp.row = row;
-            tmp.column = column;
-            choices[4] = tmp;
-
-            tmp.row = row;
-            tmp.column = column + 1;
-            choices[5] = tmp;
-
-            tmp.row = row + 1;
-            tmp.column = column - 1;
-            choices[6] = tmp;
-
-            tmp.row = row + 1;
-            tmp.column = column;
-            choices[7] = tmp;
-
-            tmp.row = row + 1;
-            tmp.column = column + 1;
-            choices[8] = tmp;
-        }
-    }
-
-
-    RGBTRIPLE list[9];
-    int count = 0;
-
-    // find out if those 9 pixels are of interest (disregard if on pixel of interest is on edge, etc...)
-    for (int i = 0; i < 9; i++)
-        {
-            if (choices[i].column > 0 && choices[i].column < height && choices[i].row > 0 && choices[i].row < width)
-                {
-                    list[count] = image[choices[i].row] [choices[i].column];
-                    count++;
-                }
-        }
-
-    float totalred = 0;
-    float totalgreen = 0;
-    float totalblue = 0;
-
-    //iterate through index (pixels you are "blurring" together) to tally up color values
-    for (int index = 0; index < count; index++)
-    {
-        totalred += list[index].rgbtRed;
-        totalgreen += list[index].rgbtGreen;
-        totalblue += list[index].rgbtBlue;
-
-    }
-
-    imageCopy[height][width].rgbtRed = round(totalred/count);
-    imageCopy[height][width].rgbtGreen = round(totalgreen/count);
-    imageCopy[height][width].rgbtBlue = round(totalblue/count);
-    // should I swap out height/width for row/column
-
-
-
-    // iterate over copy and put back in actual image
+    RGBTRIPLE blurred[height][width];
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-        image [i][j].rgbtRed = imageCopy [i][j].rgbtRed;
-        image [i][j].rgbtGreen  = imageCopy [i][j].rgbtGreen;
-        image [i][j].rgbtBlue  = imageCopy [i][j].rgbtBlue;
+            int blue = 0;
+            int red = 0;
+            int green = 0;
+            int n = 0;
+
+            // average grid of pixels
+            for (int k = -1; k <= 1; k++)
+            {
+                for (int l = -1; l <= 1; l++)
+                {
+                    if (i + k >= 0 && i + k < height && j + l >= 0 && j + l < width)
+                    {
+                        blue += image[i + k][j + l].rgbtBlue;
+                        red += image[i + k][j + l].rgbtRed;
+                        green += image[i + k][j + l].rgbtGreen;
+                        n++;
+                    }
+                }
+
+            }
+            if (n)
+            {
+                blurred[i][j].rgbtBlue = round((float)blue / n);
+                blurred[i][j].rgbtRed = round((float)red / n);
+                blurred[i][j].rgbtGreen = round((float)green / n);
+            }
+
         }
     }
 
+    // copy blurred to image
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            image[i][j].rgbtBlue = blurred[i][j].rgbtBlue;
+            image[i][j].rgbtRed = blurred[i][j].rgbtRed;
+            image[i][j].rgbtGreen = blurred[i][j].rgbtGreen;
+        }
+    }
     return;
 }
+
+// void average(int i , int j, RGBTRIPLE image[height][width])
+// {
+//     int average = 0;
+//     int n = 0;
+//     // average grid of pixels
+//     for (int k = 0; k < 9; k++)
+//     {
+//         if (i - 1 - k >= 0  && i + 1 + k <= height && j - 1 - k  >= 0 && j + 1 + k  <= width)
+//         {
+//             average += image[i][j];
+//             n++;
+//         }
+//     }
+
+//     image[i][j] = round(average / n);
+
+// }
