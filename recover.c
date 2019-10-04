@@ -35,7 +35,7 @@ int main(int argc, char *argv[])
             break;
         }
         // Check first three bytes
-        if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff && bytes[3] >= 0xe0 && bytes[3] <= 0xef)
+        if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff && (bytes[3] & 0xf0 == 0xe0))
         {
             start = true;
             // save previous file and start new file
