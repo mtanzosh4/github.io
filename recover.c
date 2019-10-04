@@ -31,11 +31,11 @@ int main(int argc, char *argv[])
         bytes_read = fread(bytes, 1, 512, rawfile);
         if (bytes_read != 512)
         {
-            printf("%i bytes\n", bytes_read);
+            // printf("%i bytes\n", bytes_read);
             break;
         }
         // Check first three bytes
-        if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff && (bytes[3] & 0xf0 == 0xe0))
+        if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff && (bytes[3] & 0xf0) == 0xe0)
         {
             start = true;
             // save previous file and start new file
