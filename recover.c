@@ -26,9 +26,16 @@ int main(int argc, char *argv[])
     // Declare file pointer
     FILE *recoveredfile = fopen(file_name, "w");
 
-    while (fread(bytes, 1, 512, rawfile) == 512)
-    {
+    int bytes_read;
 
+    // while (fread(bytes, 1, 512, rawfile) == 512)
+    while (1)
+    {
+        bytes_read = fread(bytes, 1, 512, rawfile);
+        if (bytes_read != 512)
+        {
+            break;
+        }
         // Check first three bytes
         if (bytes[0] == 0xff && bytes[1] == 0xd8 && bytes[2] == 0xff && (bytes[3] & 0xf0) == 0xe0)
         {
@@ -53,7 +60,8 @@ int main(int argc, char *argv[])
         }
     }
 
-    fwrite(bytes, 1, 512, recoveredfile);
+    fwrite(bytes, 1, bytes_read, recoveredfile);
+    printf("%i\n", bytes_read);
     fclose(recoveredfile);
 
     // Close file
