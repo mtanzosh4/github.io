@@ -70,68 +70,126 @@ void reflect(int height, int width, RGBTRIPLE image[height][width])
 // Blur image
 void blur(int height, int width, RGBTRIPLE image[height][width])
 {
-    RGBTRIPLE blurred[height][width];
-    for (int i = 0; i < height; i++)
-    {
-        for (int j = 0; j < width; j++)
-        {
-            int blue = 0;
-            int red = 0;
-            int green = 0;
-            int n = 0;
 
-            // average grid of pixels
-            for (int k = -1; k <= 1; k++)
-            {
-                for (int l = -1; l <= 1; l++)
+       typedef struct
+    {
+        int  row;
+        int  column;
+    }
+    CHOICES;
+
+    RGBTRIPLE imageCopy[height][width];
+    CHOICES choices[9];
+    CHOICES tmp;
+    RGBTRIPLE list[9];
+    int count = 0;
+    float totalred = 0;
+    float totalgreen = 0;
+    float totalblue = 0;
+    int n = 0;
+
+
+    for (int row = 0; row < height; row++)
+    {
+        for (int column = 0; column < width; column++)
+        {
+            // build RGBstructure list based on the pixels you want to average- array of pairs
+            // find the nine pixels
+            tmp.row = row - 1;
+            tmp.column = column - 1;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
                 {
-                    if (i + k >= 0 && i + k < height && j + l >= 0 && j + l < width)
-                    {
-                        blue += image[i + k][j + l].rgbtBlue;
-                        red += image[i + k][j + l].rgbtRed;
-                        green += image[i + k][j + l].rgbtGreen;
-                        n++;
-                    }
+                choices[n + 1] = tmp;
                 }
 
-            }
-            if (n)
+            tmp.row = row - 1;
+            tmp.column = column;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+            tmp.row = row - 1;
+            tmp.column = column + 1;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+            tmp.row = row;
+            tmp.column = column - 1;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+            tmp.row = row;
+            tmp.column = column;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+            tmp.row = row;
+            tmp.column = column + 1;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+            tmp.row = row + 1;
+            tmp.column = column - 1;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+            tmp.row = row + 1;
+            tmp.column = column;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+            tmp.row = row + 1;
+            tmp.column = column + 1;
+            if (tmp.row >= 0 && tmp.row <= height && tmp.column >= 0 && tmp.column <= width)
+                {
+                choices[n+1] = tmp;
+                n++;
+                }
+
+
+            for (int index = 0; index <= 9; index++)
             {
-                blurred[i][j].rgbtBlue = round((float)blue / n);
-                blurred[i][j].rgbtRed = round((float)red / n);
-                blurred[i][j].rgbtGreen = round((float)green / n);
+                totalred += image[choices[index].row] [choices[index].column].rgbtRed;
+                totalgreen += image[choices[index].row] [choices[index].column].rgbtGreen;
+                totalblue += image[choices[index].row] [choices[index].column].rgbtBlue;
             }
 
+
+            imageCopy[height][width].rgbtRed = round(totalred/count);
+            imageCopy[height][width].rgbtGreen = round(totalgreen/count);
+            imageCopy[height][width].rgbtBlue = round(totalblue/count);
         }
     }
 
-    // copy blurred to image
     for (int i = 0; i < height; i++)
     {
         for (int j = 0; j < width; j++)
         {
-            image[i][j].rgbtBlue = blurred[i][j].rgbtBlue;
-            image[i][j].rgbtRed = blurred[i][j].rgbtRed;
-            image[i][j].rgbtGreen = blurred[i][j].rgbtGreen;
+        image [i][j].rgbtRed = imageCopy [i][j].rgbtRed;
+        image [i][j].rgbtGreen  = imageCopy [i][j].rgbtGreen;
+        image [i][j].rgbtBlue  = imageCopy [i][j].rgbtBlue;
         }
     }
+
     return;
 }
-
-// void average(int i , int j, RGBTRIPLE image[height][width])
-// {
-//     int average = 0;
-//     int n = 0;
-//     // average grid of pixels
-//     for (int k = 0; k < 9; k++)
-//     {
-//         if (i - 1 - k >= 0  && i + 1 + k <= height && j - 1 - k  >= 0 && j + 1 + k  <= width)
-//         {
-//             average += image[i][j];
-//             n++;
-//         }
-//     }
-
-//     image[i][j] = round(average / n);
-
-// }
