@@ -35,20 +35,19 @@ bool check(const char *word)
     }
 
     int position = hash(lower_word);
-    // if (table[position] != NULL)
-    // {
+    if (table[position] != NULL)
+    {
         node *n = table[position];
         while (n != NULL)
         {
             if (!strcmp(n->word, lower_word))
             {
-                // free(n);
                 return true;
             }
             n = n->next;
         }
-    // }
-    free(n);
+
+    }
     return false;
 }
 
@@ -70,24 +69,33 @@ bool load(const char *dictionary)
 {
     // TODO
     FILE *dict_pointer = fopen(dictionary, "r");
-    if (dict_pointer == NULL)
-    {
+    if (dict_pointer == NULL){
         return false;
     }
 
     node *n = malloc(sizeof(node));
-    // int letter_idx = 0;
+    int letter_idx = 0;
 
     while (true)
     {
 
         char c = fgetc(dict_pointer);
-        int letter_idx = 0;
+        if (c == EOF)
+        {
+            return true;
+        }
 
-        if (c == '\n' || c == EOF)
+        if (c == '\n')
         {
             dictionary_size++;
+            n->next = NULL;
             n->word[letter_idx] = '\0';
+
+            if (!strcmp(n->word, "la"))
+            {
+                printf("loading la\n");
+            }
+
             int position = hash(n->word);
             if (table[position] == NULL)
             {
@@ -99,22 +107,8 @@ bool load(const char *dictionary)
                 n->next = table[position]->next;
 		        table[position]->next = n;
             }
-
-        }
-
-        if (c == EOF)
-        {
-            if (n->word[letter_idx - 1] == '\n')
-            {
-                dictionary_size--;
-            }
-            return true;
-        }
-
-        if (c == '\n')
-        {
             n = malloc(sizeof(node));
-
+            letter_idx = 0;
         }
         else
         {
@@ -137,18 +131,6 @@ unsigned int size(void)
 bool unload(void)
 {
     // TODO
-    for (int i = 0; i < SIZE; i++)
-    {
-        node *list = table[i];
-        while (list != NULL)
-        {
-            node *temp = list;
-            list = list->next;
-            free(temp);
-        }
-        free(list);
-    }
-
+    // return false;
     return true;
-
 }
