@@ -76,12 +76,13 @@ bool load(const char *dictionary)
     }
 
     node *n = malloc(sizeof(node));
-    int letter_idx = 0;
+    // int letter_idx = 0;
 
     while (true)
     {
 
         char c = fgetc(dict_pointer);
+        int letter_idx = 0;
 
         if (c == '\n' || c == EOF)
         {
@@ -98,12 +99,15 @@ bool load(const char *dictionary)
                 n->next = table[position]->next;
 		        table[position]->next = n;
             }
-            letter_idx = 0;
+
         }
 
-        if (c == EOF && !letter_idx)
+        if (c == EOF)
         {
-            // free(n);
+            if (n->word[letter_idx - 1] == '\n')
+            {
+                dictionary_size--;
+            }
             return true;
         }
 
