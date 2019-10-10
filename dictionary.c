@@ -29,7 +29,7 @@ bool check(const char *word)
 {
     // TODO
     char lower_word[LENGTH + 1];
-    for (int i = 0; i <= LENGTH; i++)
+    for (int i = 0, word_len = strlen(word); i <= word_len; i++)
     {
         lower_word[i] = tolower(word[i]);
     }
@@ -82,6 +82,7 @@ bool load(const char *dictionary)
         char c = fgetc(dict_pointer);
         if (c == EOF)
         {
+            fclose(dict_pointer);
             return true;
         }
 
