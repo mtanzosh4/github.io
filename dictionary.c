@@ -42,7 +42,7 @@ bool check(const char *word)
         {
             if (!strcmp(n->word, lower_word))
             {
-                free(n);
+                // free(n);
                 return true;
             }
             n = n->next;
@@ -82,23 +82,11 @@ bool load(const char *dictionary)
     {
 
         char c = fgetc(dict_pointer);
-        if (c == EOF)
-        {
-            free(n);
-            return true;
-        }
 
-        if (c == '\n')
+        if (c == '\n' || c == EOF)
         {
             dictionary_size++;
-            n->next = NULL;
             n->word[letter_idx] = '\0';
-
-            if (!strcmp(n->word, "la"))
-            {
-                printf("loading la\n");
-            }
-
             int position = hash(n->word);
             if (table[position] == NULL)
             {
@@ -110,8 +98,19 @@ bool load(const char *dictionary)
                 n->next = table[position]->next;
 		        table[position]->next = n;
             }
-            n = malloc(sizeof(node));
             letter_idx = 0;
+        }
+
+        if (c == EOF && !letter_idx)
+        {
+            // free(n);
+            return true;
+        }
+
+        if (c == '\n')
+        {
+            n = malloc(sizeof(node));
+
         }
         else
         {
