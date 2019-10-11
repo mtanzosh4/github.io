@@ -35,8 +35,8 @@ bool check(const char *word)
     }
 
     int position = hash(lower_word);
-    if (table[position] != NULL)
-    {
+    // if (table[position] != NULL)
+    // {
         node *n = table[position];
         while (n != NULL)
         {
@@ -47,7 +47,7 @@ bool check(const char *word)
             n = n->next;
         }
 
-    }
+    // }
     return false;
 }
 
