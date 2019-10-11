@@ -1,10 +1,9 @@
 // Implements a dictionary's functionality
-
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <ctype.h>
+#include <stdbool.h>
 #include <string.h>
+#include <strings.h>
 
 #include "dictionary.h"
 
@@ -12,136 +11,131 @@
 typedef struct node
 {
     char word[LENGTH + 1];
+    int index;
     struct node *next;
 }
 node;
 
-int dictionary_size = 0;
-
 // Number of buckets in hash table
-// const unsigned int N = 1;
+const unsigned int N = 1;
 
 // Hash table
-node *table[SIZE];
+node *table[N];
+
+
+// dict size
+int dict_size = 0;
 
 // Returns true if word is in dictionary else false
 bool check(const char *word)
 {
     // TODO
-    char lower_word[LENGTH + 1];
-    for (int i = 0, word_len = strlen(word); i <= word_len; i++)
+    // printf("word: %s\n", word);
+    node *current = table[0];
+    while (current != NULL)
     {
-        lower_word[i] = tolower(word[i]);
-    }
 
-    int position = hash(lower_word);
-    // if (table[position] != NULL)
-    // {
-        node *n = table[position];
-        while (n != NULL)
+       if (strcasecmp(current->word, word) == 0)
         {
-            if (!strcmp(n->word, lower_word))
-            {
-                return true;
-            }
-            n = n->next;
+            return true;
         }
 
-    // }
+        current = current->next;
+    }
+
     return false;
 }
 
 // Hashes word to a number
-// http://www.cs.yorku.ca/~oz/hash.html
 unsigned int hash(const char *word)
 {
-    unsigned int hash = 5381;
-    int c = 0;
-
-    while ((c = *word++))
-        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
-
-    return hash % SIZE;
+    // TODO
+    return 0;
 }
 
 // Loads dictionary into memory, returning true if successful else false
 bool load(const char *dictionary)
 {
-    // TODO
-    FILE *dict_pointer = fopen(dictionary, "r");
-    if (dict_pointer == NULL){
-        return false;
-    }
+    FILE* dict = fopen(dictionary, "r");
 
-    node *n = malloc(sizeof(node));
-    int letter_idx = 0;
-
-    while (true)
+    if (dict == NULL)
     {
-
-        char c = fgetc(dict_pointer);
-        if (c == EOF)
-        {
-            fclose(dict_pointer);
-            return true;
-        }
-
-        if (c == '\n')
-        {
-            dictionary_size++;
-            n->next = NULL;
-            n->word[letter_idx] = '\0';
-
-            if (!strcmp(n->word, "la"))
-            {
-                printf("loading la\n");
-            }
-
-            int position = hash(n->word);
-            if (table[position] == NULL)
-            {
-                table[position] = n;
-            }
-            else
-            {
-                // add to beginning of list
-                n->next = table[position]->next;
-		        table[position]->next = n;
-            }
-            n = malloc(sizeof(node));
-            letter_idx = 0;
-        }
-        else
-        {
-            n->word[letter_idx] = c;
-            letter_idx++;
-        }
-
+        return 1;
     }
 
+// WORDS MISSPELLED:     955
+// WORDS IN DICTIONARY:  143091
+// WORDS IN TEXT:        17756
+// TIME IN load:         0.02
+// TIME IN check:        0.01
+// TIME IN size:         0.00
+// TIME IN unload:       0.01
+// TIME IN TOTAL:        0.04
+
+// WORDS MISSPELLED:     955
+// WORDS IN DICTIONARY:  143091
+// WORDS IN TEXT:        17756
+// TIME IN load:         0.02
+// TIME IN check:        7.11
+// TIME IN size:         0.00
+// TIME IN unload:       0.00
+// TIME IN TOTAL:        7.13
+
+    char *dict_word[LENGTH + 1];
+    node *head = NULL;
+    table[dict_size] = head;
+
+    while (!(feof(dict)))
+    {
+        node *new_word = malloc(sizeof(node));
+        if (new_word == NULL)
+        {
+            return 1;
+        }
+        fscanf(dict, "%s", *dict_word);
+        // hash(*dict_word);
+        // printf("dict_word: %s\n", *dict_word);
+        // printf("sizeof(dict_word): %lu\n", sizeof(dict_word)/sizeof(char*));
+
+        strcpy(new_word->word, *dict_word);
+        new_word->next = NULL;
+        dict_size++;
+        new_word->index = dict_size;
+        new_word->next = head;
+        head = new_word;
+        table[0] = head;
+    }
+
+    // Why prints (null) instead of caterpillar
+    // printf("Last table word: %s\n", table[0]->word);
+    // printf("Dict size: %i\n", dict_size);
+
+    return true;
 }
 
 // Returns number of words in dictionary if loaded else 0 if not yet loaded
 unsigned int size(void)
 {
     // TODO
-    return dictionary_size;
+    return dict_size;
 }
 
 // Unloads dictionary from memory, returning true if successful else false
 bool unload(void)
 {
     // TODO
-    for (int i = 0; i < SIZE; i++)
+    node *current = table[0];
+
+    while (current != NULL)
     {
-        node *list = table[i];
-        while (list != NULL)
-        {
-            node *temp = list;
-            list = list->next;
-            free(temp);
-        }
-        free(list);
+        node *temp = current;
+        current = current->next;
+        free(temp);
     }
-    return true;
+
+    if (current == NULL)
+    {
+        return true;
+    }
+    return false;
 }
