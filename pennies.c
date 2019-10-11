@@ -4,31 +4,37 @@
 
 int main(void)
 {
+    //prompts the user for an amount of days in between 28 and 31
+    int daysInMonth;    
+    do
+    {
+        daysInMonth = get_int("How many days are in the month? \n");  
+    }
+    while (daysInMonth > 31 || daysInMonth < 28);
 
-    int days;
-    long penniesStart;
-    long penniesEnd = 0;
-    int day;
-    
+    //prompts the user for a positive number of pennies earned on the first day
+    long penniesOnFirstDay;    
     do
     {
-        days = get_int("how many days this month?:\n");
+        penniesOnFirstDay = get_long("How many pennies will you get on the first day? \n");  
     }
-    while (days < 28 || days > 31);
+    while (penniesOnFirstDay < 1);
     
-    do
+    //declaring variables to be used in the for loop
+    int dayOfMonth;
+    long numberOfPennies = penniesOnFirstDay;
+    
+    //this will perform the algorithm and add the value for each day in the month
+    for (dayOfMonth = 1; dayOfMonth < daysInMonth; dayOfMonth++)
     {
-        penniesStart = get_long_long("how many pennies are you starting with?:\n");
-    }
-    while (penniesStart < 1);
-    
-    for(day = 0; day < days ; day++)
-    {
-        penniesEnd += penniesStart * pow(2, day);
+        numberOfPennies += penniesOnFirstDay * pow(2, dayOfMonth);
+        
     }
     
-    double penniesTotal = (double)penniesEnd / 100;
+    //converting from pennies to dollars
+    double total = (double) numberOfPennies / 100;
     
-    printf("$%.2f\n", penniesTotal);
+    //printing the number of dollars earned
+    printf("$%.2f\n", total);
     
 }
