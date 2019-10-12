@@ -83,6 +83,7 @@ bool load(const char *dictionary)
         fscanf(dict, "%s", dict_word);
         if (feof(dict))
         {
+            free(new_word);
             return true;
         }
         // hash(*dict_word);
