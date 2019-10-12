@@ -20,7 +20,7 @@ node;
 const unsigned int N = 1;
 
 // Hash table
-node *table[N];
+node *table[SIZE];
 
 
 // dict size
@@ -49,8 +49,13 @@ bool check(const char *word)
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    // TODO
-    return 0;
+    unsigned int hash = 5381;
+    int c = 0;
+
+    while ((c = *word++))
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    return hash % SIZE;
 }
 
 // Loads dictionary into memory, returning true if successful else false
@@ -60,44 +65,31 @@ bool load(const char *dictionary)
 
     if (dict == NULL)
     {
-        return 1;
+        return false;
     }
 
-// WORDS MISSPELLED:     955
-// WORDS IN DICTIONARY:  143091
-// WORDS IN TEXT:        17756
-// TIME IN load:         0.02
-// TIME IN check:        0.01
-// TIME IN size:         0.00
-// TIME IN unload:       0.01
-// TIME IN TOTAL:        0.04
 
-// WORDS MISSPELLED:     955
-// WORDS IN DICTIONARY:  143091
-// WORDS IN TEXT:        17756
-// TIME IN load:         0.02
-// TIME IN check:        7.11
-// TIME IN size:         0.00
-// TIME IN unload:       0.00
-// TIME IN TOTAL:        7.13
-
-    char *dict_word[LENGTH + 1];
+    char dict_word[LENGTH + 1];
     node *head = NULL;
     table[dict_size] = head;
 
-    while (!(feof(dict)))
+    while (true)
     {
         node *new_word = malloc(sizeof(node));
         if (new_word == NULL)
         {
-            return 1;
+            return false;
         }
-        fscanf(dict, "%s", *dict_word);
+        fscanf(dict, "%s", dict_word);
+        if (feof(dict))
+        {
+            return true;
+        }
         // hash(*dict_word);
         // printf("dict_word: %s\n", *dict_word);
         // printf("sizeof(dict_word): %lu\n", sizeof(dict_word)/sizeof(char*));
 
-        strcpy(new_word->word, *dict_word);
+        strcpy(new_word->word, dict_word);
         new_word->next = NULL;
         dict_size++;
         new_word->index = dict_size;
