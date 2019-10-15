@@ -3,9 +3,9 @@
 #include <cs50.h>
 #include <stdio.h>
 
-#define SIZE 9
+#define NUMBERS 9
 
-bool bin_search(int value, int values[], int n);
+bool bin_search(int value, int values[], int size);
 
 int main(void)
 {
@@ -13,7 +13,7 @@ int main(void)
 
     int target = get_int("Enter a number: ");
 
-    if (bin_search(target, arr, SIZE))
+    if (bin_search(target, arr, NUMBERS))
     {
         printf("Found\n");
     }
@@ -23,14 +23,13 @@ int main(void)
     }
 }
 
-bool bin_search(int value, int values[], int n)
+bool bin_search(int value, int values[], int size)
 {
-    int min = 0, max =  n - 1;
+    int min = 0;
+    int max = size - 1;
+    int middle = (min + max) / 2; 
     while (min <= max)
     {
-//         printf("min: %i max: %i\n", min, max);
-        int middle = (min + max) / 2;
-//         printf("middle: %i values[middle]: %i\n", middle, values[middle]);
         if (value < values[middle])
         {
             max = middle - 1;
@@ -43,6 +42,9 @@ bool bin_search(int value, int values[], int n)
         {
             return true;
         }
-    }
+    }   
+        
+        
     return false;
 }
+
