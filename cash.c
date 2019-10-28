@@ -10,27 +10,27 @@ int main(void)
     }
     while(n < 0);
 
-    n = n * 100;
+    int cents = round(n * 100);
 
     int coins = 0;
-    while (n >= 25)
+    while (cents >= 25)
     {
-        n = n - 25;
+        cents = cents - 25;
         coins++;
     }
-    while (n >= 10)
+    while (cents >= 10)
     {
-        n = n - 10;
+        cents = cents - 10;
         coins++;
     }
-    while (n >= 5)
+    while (cents >= 5)
     {
-        n = n - 5;
+        cents = cents - 5;
         coins++;
     }
-    while (n >= 1)
+    while (cents >= 1)
     {
-        n = n - 1;
+        cents = cents - 1;
         coins++;
     }
 
