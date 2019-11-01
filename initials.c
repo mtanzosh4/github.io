@@ -5,7 +5,7 @@
 
 int main(void)
 {
-    string s = get_string("");
+    string s = get_string("Name: ");
     printf("%c", toupper(s[0]));
     for (int i = 1; i < strlen(s); i++)
     {
