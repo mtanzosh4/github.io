@@ -197,21 +197,26 @@ void draw(void)
 // If tile borders empty space, moves tile and returns true, else returns false
 bool move(int tile)
 {
+    int tile_row, tile_col;
     for (int i = 0; i < d; i++)
     {
         for (int j = 0; j < d; j++)
         {
             if (board[i][j] == tile)
             {
-                if (board[i][j] == board[blank_row - 1][blank_col] || board[i][j] == board[blank_row][blank_col - 1] || board[i][j] == board[blank_row + 1][blank_col] || board[i][j] == board[blank_row][blank_col + 1])
-                {
-                    board[i][j] = 0;
-                    board[blank_row][blank_col] = tile;
-                    blank_row = i;
-                    blank_col = j;
-                    return true;
-                }
+                tile_row = i;
+                tile_col = j;
+                break;
             }
+        }
+
+        if (board[tile_row][tile_col] == board[blank_row - 1][blank_col] || board[tile_row][tile_col] == board[blank_row][blank_col - 1] || board[tile_row][tile_col] == board[blank_row + 1][blank_col] || board[tile_row][tile_col] == board[blank_row][blank_col + 1])
+        {
+            board[tile_row][tile_col] = 0;
+            board[blank_row][blank_col] = tile;
+            blank_row = tile_row;
+            blank_col = tile_col;
+            return true;
         }
     }
     return false;
