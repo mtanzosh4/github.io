@@ -40,10 +40,10 @@ int main(void)
 
     if (upper && lower && digit && special)
     {
-        printf("Does Not Pass\n");
+        printf("Passes\n");
     }
     else
     {
-        printf("Passes\n");
+        printf("Does Not Pass\n");
     }
 }
