@@ -114,7 +114,7 @@ int main(int argc, string argv[])
 
         // TODO 07: User inputs which tile to move
         printf("Tile to move: ");
-        int tile = get_int();
+        int tile = get_int("Tile to move: ");
 
         // quit if user inputs 0 (for testing)
         if (tile == 0)
