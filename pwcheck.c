@@ -5,7 +5,7 @@
 
 int main(void)
 {
-    string pw = get_string("Enter Password: ");
+    string pw = get_string("");
 
     if (strlen(pw) < 8)
     {
@@ -44,6 +44,6 @@ int main(void)
     }
     else
     {
-        printf("Your password failed.\n");
+        printf("Passes\n");
     }
 }
