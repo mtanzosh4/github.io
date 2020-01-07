@@ -232,7 +232,7 @@ bool move(int tile)
         {
             board[tile_row][tile_col + 1] = tile;
             board[tile_row][tile_col] = 0;
-            empty_col = tile_col;
+            blank_col = tile_col;
             return true;
         }
 
