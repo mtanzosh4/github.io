@@ -210,12 +210,45 @@ bool move(int tile)
             }
         }
 
-        if (board[tile_row][tile_col] == board[blank_row - 1][blank_col] || board[tile_row][tile_col] == board[blank_row][blank_col - 1] || board[tile_row][tile_col] == board[blank_row + 1][blank_col] || board[tile_row][tile_col] == board[blank_row][blank_col + 1])
+        // if (board[tile_row][tile_col] == board[blank_row - 1][blank_col] || board[tile_row][tile_col] == board[blank_row][blank_col - 1] || board[tile_row][tile_col] == board[blank_row + 1][blank_col] || board[tile_row][tile_col] == board[blank_row][blank_col + 1])
+        // {
+        //     board[tile_row][tile_col] = 0;
+        //     board[blank_row][blank_col] = tile;
+        //     blank_row = tile_row;
+        //     blank_col = tile_col;
+        //     return true;
+        // }
+
+        if ((tile_row == blank_row && tile_col + 1 == blank_col) || (tile_row == blank_row && tile_col - 1 == blank_col) || (tile_col == blank_col && tile_row - 1 == blank_row) || (tile_col == blank_col && tile_row + 1 == blank_row))
         {
-            board[tile_row][tile_col] = 0;
             board[blank_row][blank_col] = tile;
-            blank_row = tile_row;
+            board[tile_row][tile_col] = 0;
             blank_col = tile_col;
+            return true;
+        }
+
+
+        // if ((tile_row == blank_row) && ((tile_col - 1) == blank_col))
+        // {
+        //     board[tile_row][tile_col - 1] = tile;
+        //     board[tile_row][tile_col] = 0;
+        //     blank_col = tile_col;
+        //     return true;
+        // }
+
+        // if ((tile_col == blank_col) && ((tile_row - 1) == blank_row))
+        // {
+        //     board[tile_row - 1][tile_col] = tile;
+        //     board[tile_row][tile_col] = 0;
+        //     blank_row = tile_row;
+        //     return true;
+        // }
+
+        if ((tile_col == blank_col) && ((tile_row + 1) == blank_row))
+        {
+            board[tile_row + 1][tile_col] = tile;
+            board[tile_row][tile_col] = 0;
+            blank_row = tile_row;
             return true;
         }
     }
