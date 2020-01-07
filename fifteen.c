@@ -219,31 +219,40 @@ bool move(int tile)
         //     return true;
         // }
 
-        if ((tile_row == blank_row && tile_col + 1 == blank_col) || (tile_row == blank_row && tile_col - 1 == blank_col) || (tile_col == blank_col && tile_row - 1 == blank_row) || (tile_col == blank_col && tile_row + 1 == blank_row))
+        // if ((tile_row == blank_row && tile_col + 1 == blank_col) || (tile_row == blank_row && tile_col - 1 == blank_col) || (tile_col == blank_col && tile_row - 1 == blank_row) || (tile_col == blank_col && tile_row + 1 == blank_row))
+        // {
+        //     board[blank_row][blank_col] = tile;
+        //     board[tile_row][tile_col] = 0;
+        //     blank_col = tile_col;
+        //     blank_row = tile_row;
+        //     return true;
+        // }
+
+         if ((tile_row == blank_row) && ((tile_col + 1) == blank_col))
         {
-            board[blank_row][blank_col] = tile;
+            board[tile_row][tile_col + 1] = tile;
             board[tile_row][tile_col] = 0;
-            blank_col = tile_col;
-            blank_row = tile_row;
+            empty_col = tile_col;
             return true;
         }
 
 
-        // if ((tile_row == blank_row) && ((tile_col - 1) == blank_col))
-        // {
-        //     board[tile_row][tile_col - 1] = tile;
-        //     board[tile_row][tile_col] = 0;
-        //     blank_col = tile_col;
-        //     return true;
-        // }
 
-        // if ((tile_col == blank_col) && ((tile_row - 1) == blank_row))
-        // {
-        //     board[tile_row - 1][tile_col] = tile;
-        //     board[tile_row][tile_col] = 0;
-        //     blank_row = tile_row;
-        //     return true;
-        // }
+        if ((tile_row == blank_row) && ((tile_col - 1) == blank_col))
+        {
+            board[tile_row][tile_col - 1] = tile;
+            board[tile_row][tile_col] = 0;
+            blank_col = tile_col;
+            return true;
+        }
+
+        if ((tile_col == blank_col) && ((tile_row - 1) == blank_row))
+        {
+            board[tile_row - 1][tile_col] = tile;
+            board[tile_row][tile_col] = 0;
+            blank_row = tile_row;
+            return true;
+        }
 
         if ((tile_col == blank_col) && ((tile_row + 1) == blank_row))
         {
