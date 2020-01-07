@@ -224,6 +224,7 @@ bool move(int tile)
             board[blank_row][blank_col] = tile;
             board[tile_row][tile_col] = 0;
             blank_col = tile_col;
+            blank_row = tile_row;
             return true;
         }
 
