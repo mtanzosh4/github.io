@@ -40,7 +40,7 @@ int main(void)
 
     if (upper && lower && digit && special)
     {
-        printf("Your password is good!\n");
+        printf("Does Not Pass\n");
     }
     else
     {
