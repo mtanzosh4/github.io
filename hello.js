@@ -7,5 +7,3 @@ function hello (input) {
     }
 
 }
-
-// test("")
