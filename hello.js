@@ -5,5 +5,4 @@ function hello (input) {
     else {
         console.log("hello, " + input)
     }
-
 }
